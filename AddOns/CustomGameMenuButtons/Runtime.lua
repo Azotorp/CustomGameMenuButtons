@@ -37,7 +37,6 @@ function core:ValidateLayout(p)
     end end
     if p.removed then for k,v in pairs(p.removed) do if type(k)~="string" or v~=true then p.removed[k]=nil end end end
     if p.serial~=nil and (not finite(p.serial) or p.serial<0) then p.serial=0 end
-    if p.scalePercent~=nil and not finite(p.scalePercent) then p.scalePercent=nil end
     return p
 end
 -- Called exclusively by an installed successor, never by the main addon alone.
