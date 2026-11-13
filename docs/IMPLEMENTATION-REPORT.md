@@ -174,3 +174,7 @@ Source and extracted distributions: 55 behavior groups each; 0 failures
 The nonworking real menu scaling feature was removed; the editor now exposes only Preview Scale. The Custom Buttons manager previously assumed UICheckButtonTemplate.Text exists, which can halt window construction on WoW Forever before New/Duplicate/Delete/Save are built. The checkbox label is now independent of that template, and preview-font access is guarded.
 
 Source regression harness: **56 passed, 0 failed under a Lua 5.3 compatibility runner**. The native Lua 5.1 harness and live Forever game client were not available for this follow-up; those remain pending. All packaged ZIPs passed CRC checks. This update was committed to GitHub source only, not published to CurseForge.
+
+## 1.0.4 follow-up
+
+In-game report showed the Custom Buttons dialog stopping after Action type. The draft is now initialized ahead of dropdown construction and pre-preview text updates are guarded. The local Lua 5.3-compatibility test harness passes 57 checks including eager dropdown initialization; native Lua 5.1 and live client testing remain outstanding.
