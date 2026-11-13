@@ -11,3 +11,9 @@ Public numbering restarts at 1.0.0; historical v7/private 6.x numbering is not t
 - Added Forever module structure, `_Forever.toc` files, API compatibility checks, data validation, reproducible build tooling and GPL-3.0-only licensing for code.
 
 No GitHub commit/push/tag or CurseForge upload was performed. In-game acceptance remains pending.
+
+## 1.0.1 — Scale controls
+
+- Distinguish **Game Menu Scale** (saved in the layout and applied to the actual GameMenuFrame) from **Preview Scale** (editor-only zoom).
+- Preview zoom starts at 100% each editor opening; its reset does not modify game-menu scale.
+- Game-menu scaling applies on Save and is restored during menu arrangement.
