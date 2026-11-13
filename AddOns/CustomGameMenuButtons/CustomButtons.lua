@@ -154,6 +154,8 @@ end
 function core:OpenCustomButtons()
     if window and window:IsShown() then window:Hide(); return end
     if not window then
+        -- Dropdowns can initialize immediately; prepare the draft first.
+        draft={label="",kind="command",command="",enabled=true}
         window=CreateFrame("Frame","CGMBCustomButtonManager",UIParent,"BasicFrameTemplateWithInset")
         window:SetSize(540,440); window:SetPoint("CENTER"); window:SetFrameStrata("DIALOG")
         window:SetFrameLevel(GameMenuFrame:GetFrameLevel()+65)
@@ -171,13 +173,13 @@ function core:OpenCustomButtons()
             return list
         end)
         label(window,"Button text",18,86,115); window.name=edit(window,154,77,350)
-        window.name:SetScript("OnTextChanged",function(self) if draft then draft.label=self:GetText(); window.preview:SetText(draft.label~="" and draft.label or "Button preview") end end)
+        window.name:SetScript("OnTextChanged",function(self) if draft then draft.label=self:GetText(); if window.preview then window.preview:SetText(draft.label~="" and draft.label or "Button preview") end end end)
         label(window,"Action type",18,129,115)
         window.kind=drop(window,124,117,340,function()
             local list={}
             for _,v in ipairs({{"command","Command"},{"preset","Built-in page"}}) do
                 local k=v[1]
-                list[#list+1]={text=v[2],checked=draft.kind==k,click=function() readForm(); draft.kind=k; refresh() end}
+                list[#list+1]={text=v[2],checked=draft and draft.kind==k,click=function() readForm(); draft.kind=k; refresh() end}
             end
             return list
         end)
@@ -187,7 +189,7 @@ function core:OpenCustomButtons()
             local list={}
             for _,id in ipairs(core.presetOrder) do
                 local k=id; local p=core.presets[k]; local available,reason=core:PresetAvailable(k)
-                list[#list+1]={text=p.label..(available and "" or " ("..(reason or "unavailable")..")"),checked=draft.preset==k,disabled=not available,
+                list[#list+1]={text=p.label..(available and "" or " ("..(reason or "unavailable")..")"),checked=draft and draft.preset==k,disabled=not available,
                     click=function() readForm(); draft.preset=k; if trim(draft.label)=="" then draft.label=p.label end; refresh() end}
             end
             return list
