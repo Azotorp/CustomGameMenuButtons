@@ -12,6 +12,7 @@ local function percent(value)
     return math.max(50,math.min(150,math.floor(value/5+.5)*5))
 end
 local nativeScale,lastApplied
+local previewPercent=100
 function core:ApplyMenuScale()
     local menu=GameMenuFrame
     if InCombatLockdown() and menu.IsProtected and menu:IsProtected() then return end
@@ -264,8 +265,8 @@ local function makeEditor()
     w.caption=w:CreateFontString(nil,"OVERLAY","GameFontHighlight"); w.caption:SetPoint("TOPLEFT",w,"TOPRIGHT",-191,-42)
     w.caption:SetWidth(178)
     w.warning=w:CreateFontString(nil,"OVERLAY","GameFontHighlight")
-    w.warning:SetPoint("TOPLEFT",w,"TOPLEFT",18,-444); w.warning:SetWidth(450); w.warning:SetHeight(48)
-    w:SetHeight(510)
+    w.warning:SetPoint("TOPLEFT",w,"TOPLEFT",18,-540); w.warning:SetWidth(450); w.warning:SetHeight(48)
+    w:SetHeight(566)
     w.up=button(w,"Move up",290,78,86,function() changeOrder(-1) end)
     w.down=button(w,"Move down",380,78,92,function() changeOrder(1) end)
     button(w,"Add spacer",290,112,182,addSpace)
@@ -304,9 +305,29 @@ local function makeEditor()
         draft.scalePercent=n~=100 and n or nil
         core:RefreshMenuEditor()
     end)
-    if core.OpenCustomButtons then button(w,"Custom buttons...",18,410,174,function() core:OpenCustomButtons() end) end
-    button(w,"Cancel",282,410,88,function() w:Hide() end)
-    button(w,"Save",378,410,94,function()
+    w.previewLabel=w:CreateFontString(nil,"OVERLAY","GameFontHighlight")
+    w.previewLabel:SetPoint("TOPLEFT",w,"TOPRIGHT",-196,-407)
+    w.previewDefault=button(w,"100%",408,398,64,function()
+        previewPercent=100; core:RefreshMenuEditor()
+    end)
+    local ps=CreateFrame("Slider",nil,w)
+    w.previewSlider=ps
+    ps:SetPoint("TOPLEFT",w,"TOPRIGHT",-190,-428); ps:SetSize(170,20)
+    ps:SetOrientation("HORIZONTAL"); ps:SetMinMaxValues(50,150)
+    ps:SetValueStep(5); ps:SetObeyStepOnDrag(true); ps:EnableMouse(true)
+    local pt=ps:CreateTexture(nil,"BACKGROUND")
+    pt:SetPoint("LEFT",ps,"LEFT"); pt:SetPoint("RIGHT",ps,"RIGHT")
+    pt:SetHeight(4); pt:SetColorTexture(.40,.40,.40,1)
+    ps:SetThumbTexture("Interface\\Buttons\\UI-SliderBar-Button-Horizontal")
+    ps:GetThumbTexture():SetSize(22,22)
+    ps:SetScript("OnValueChanged",function(_,value)
+        if not draft or w.syncSlider then return end
+        previewPercent=percent(value)
+        core:RefreshMenuEditor()
+    end)
+    if core.OpenCustomButtons then button(w,"Custom buttons...",18,474,174,function() core:OpenCustomButtons() end) end
+    button(w,"Cancel",282,474,88,function() w:Hide() end)
+    button(w,"Save",378,474,94,function()
         db().layout=draft
         for _,r in pairs(core.registry) do
             if r.layoutDraft then core.util.copyPreferences(r.layoutDraft,r.db) end
@@ -332,9 +353,13 @@ end
 function core:RefreshMenuEditor()
     if not draft or not self.menuModel or not editor or not editor:IsShown() then return end
     local n=percent(draft.scalePercent)
-    local factor=n/100
-    editor.syncSlider=true; editor.menuSlider:SetValue(n); editor.syncSlider=false
-    editor.scaleLabel:SetText("Menu scale: "..n.."%")
+    local factor=previewPercent/100
+    editor.syncSlider=true
+    editor.menuSlider:SetValue(n)
+    editor.previewSlider:SetValue(previewPercent)
+    editor.syncSlider=false
+    editor.scaleLabel:SetText("Game Menu Scale: "..n.."% (save to apply)")
+    editor.previewLabel:SetText("Preview Scale: "..previewPercent.."%")
     local extra=math.max(0,240*(factor-1))
     editor:SetWidth(486+extra); editor.scroll:SetWidth(247+extra)
     editor.canvas:SetWidth(244+extra)
@@ -404,7 +429,7 @@ function core:OpenMenuEditor()
     if GameMenuFrame:IsShown() then HideUIPanel(GameMenuFrame) end
     editor=editor or makeEditor()
     self.layoutEditor=editor
-    draft=clone(db().layout); editor:Show(); self:RefreshMenuEditor()
+    draft=clone(db().layout); previewPercent=100; editor:Show(); self:RefreshMenuEditor()
 end
 local loader=CreateFrame("Frame")
 loader:RegisterEvent("ADDON_LOADED")
