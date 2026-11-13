@@ -138,7 +138,7 @@ local function refresh()
     if not window or not draft then return end
     window.name:SetText(draft.label or ""); window.command:SetText(draft.command or "")
     window.enabled:SetChecked(draft.enabled~=false)
-    UIDropDownMenu_SetText(window.member,selected and (db().buttons[selected] or draft).label or "New button")
+    UIDropDownMenu_SetText(window.member,selected and (db().buttons[selected] or draft).label or "Create new button")
     UIDropDownMenu_SetText(window.kind,draft.kind=="preset" and "Built-in page" or "Command")
     local p=core.presets[draft.preset]
     UIDropDownMenu_SetText(window.preset,p and p.label or "Choose a page")
@@ -146,7 +146,7 @@ local function refresh()
     window.preset:SetShown(draft.kind=="preset"); window.presetLabel:SetShown(draft.kind=="preset")
     window.delete:SetEnabled(selected~=nil); window.duplicate:SetEnabled(selected~=nil)
     window.preview:SetText(draft.label~="" and draft.label or "Button preview")
-    window.status:SetText(InCombatLockdown() and "Action changes are available after combat." or "Save applies this button. Close discards this form's unsaved changes.")
+    window.status:SetText(InCombatLockdown() and "Changes are queued until combat ends." or "Enter a name and choose an action, then click Save button.")
 end
 local function choose(id)
     selected=id; draft=id and clone(db().buttons[id]) or {label="",kind="command",command="",enabled=true}; refresh()
@@ -157,22 +157,22 @@ function core:OpenCustomButtons()
         window=CreateFrame("Frame","CGMBCustomButtonManager",UIParent,"BasicFrameTemplateWithInset")
         window:SetSize(540,440); window:SetPoint("CENTER"); window:SetFrameStrata("DIALOG")
         window:SetFrameLevel(GameMenuFrame:GetFrameLevel()+65)
-        window.TitleText:SetText("Custom Game Menu Buttons - Custom Buttons")
+        window.TitleText:SetText("Manage Custom Game Menu Buttons")
         window:SetMovable(true); window:SetClampedToScreen(true); window:EnableMouse(true); window:RegisterForDrag("LeftButton")
         window:SetScript("OnDragStart",window.StartMoving); window:SetScript("OnDragStop",window.StopMovingOrSizing)
         table.insert(UISpecialFrames,"CGMBCustomButtonManager")
         label(window,"Saved buttons",18,42,120)
         window.member=drop(window,125,31,340,function()
-            local list={{text="New button",checked=not selected,click=function() choose() end}}
+            local list={{text="Create new button",checked=not selected,click=function() choose() end}}
             for _,entry in ipairs(manager:List()) do
                 local id=entry.id
                 list[#list+1]={text=entry.label..(entry.config.enabled==false and " (disabled)" or ""),checked=id==selected,click=function() choose(id) end}
             end
             return list
         end)
-        label(window,"Button label",18,86,115); window.name=edit(window,154,77,350)
+        label(window,"Button text",18,86,115); window.name=edit(window,154,77,350)
         window.name:SetScript("OnTextChanged",function(self) if draft then draft.label=self:GetText(); window.preview:SetText(draft.label~="" and draft.label or "Button preview") end end)
-        label(window,"Action",18,129,115)
+        label(window,"Action type",18,129,115)
         window.kind=drop(window,124,117,340,function()
             local list={}
             for _,v in ipairs({{"command","Command"},{"preset","Built-in page"}}) do
@@ -182,7 +182,7 @@ function core:OpenCustomButtons()
             return list
         end)
         window.commandLabel=label(window,"Slash command",18,173,120); window.command=edit(window,154,164,350)
-        window.presetLabel=label(window,"Game page",18,173,115)
+        window.presetLabel=label(window,"Built-in page",18,173,120)
         window.preset=drop(window,124,161,340,function()
             local list={}
             for _,id in ipairs(core.presetOrder) do
@@ -192,22 +192,23 @@ function core:OpenCustomButtons()
             end
             return list
         end)
-        label(window,"Example: /wa or /reload. Commands run only when you click the real game-menu button.",18,211,490)
+        label(window,"Example: /wa or /reload. Your action runs when you click the new menu button.",18,211,495)
         window.enabled=CreateFrame("CheckButton",nil,window,"UICheckButtonTemplate")
-        window.enabled:SetPoint("TOPLEFT",window,"TOPLEFT",18,-248); window.enabled.Text:SetText("Enabled")
+        window.enabled:SetPoint("TOPLEFT",window,"TOPLEFT",18,-248); label(window,"Enable this button",53,254,165)
         window.preview=CreateFrame("Button",nil,window,"MainMenuFrameButtonTemplate")
         window.preview:SetPoint("TOPLEFT",window,"TOPLEFT",200,-249); window.preview:SetSize(300,32)
-        window.preview:GetFontString():SetTextColor(1,.8,.2)
+        local previewFont=window.preview:GetFontString()
+        if previewFont then previewFont:SetTextColor(1,.8,.2) end
         window.preview:SetScript("OnClick",function() end)
         window.status=label(window,"",18,303,490)
-        button(window,"New",18,350,94,function() choose() end)
-        window.duplicate=button(window,"Duplicate",120,350,108,function() readForm(); selected=nil; draft.label=draft.label.." copy"; draft.preferences=nil; refresh() end)
-        window.delete=button(window,"Delete",236,350,100,function()
+        button(window,"New button",18,350,112,function() choose() end)
+        window.duplicate=button(window,"Duplicate",137,350,104,function() readForm(); selected=nil; draft.label=draft.label.." copy"; draft.preferences=nil; refresh() end)
+        window.delete=button(window,"Delete",248,350,100,function()
             local ok,err=manager:Delete(selected)
             if ok then choose() else window.status:SetText(err) end
         end)
         button(window,"Close",320,397,94,function() window:Hide() end)
-        window.save=button(window,"Save",422,397,94,function()
+        window.save=button(window,"Save button",415,397,102,function()
             readForm(); local id,err=manager:Save(selected,draft)
             if id then choose(id); window.status:SetText("Saved. Open the game menu to use this button.") else window.status:SetText(err) end
         end)
