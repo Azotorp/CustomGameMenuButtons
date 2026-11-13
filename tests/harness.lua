@@ -141,7 +141,7 @@ local function world(opt)
     e.SlashCmdList={}; e.UISpecialFrames={}
     e.PlaySound=noop; e.SOUNDKIT={IG_MAINMENU_OPTION=1}
     e.UIDropDownMenu_SetWidth=noop
-    e.UIDropDownMenu_Initialize=function(f,fn) f.options=fn end
+    e.UIDropDownMenu_Initialize=function(f,fn) f.options=fn; if opt.eagerDropdownInit then w.options={}; fn(f,1) end end
     e.UIDropDownMenu_SetText=frames.SetText
     e.UIDropDownMenu_CreateInfo=function() return {} end
     e.UIDropDownMenu_AddButton=function(info) w.options[#w.options+1]=info end
@@ -720,6 +720,12 @@ win.name:SetText("Regression button");win.command:SetText("/wa")
 clickText(win,"Save button")
 equal(#w.core.CustomButtons:List(),1)
 pass("Custom manager completes setup when checkbox template lacks a Text field")
+w=world({custom=true,noCheckboxText=true,eagerDropdownInit=true});w:open();w.e.SlashCmdList.CUSTOMGAMEMENUCUSTOM("")
+win=w.core.customButtonWindow
+assert(win.commandLabel and win.command and win.presetLabel and win.preset and win.enabled and win.preview and win.status and win.save and win.delete and win.duplicate)
+clickText(win,"New button");win.name:SetText("Full init")
+win.command:SetText("/wa");clickText(win,"Save button");equal(#w.core.CustomButtons:List(),1)
+pass("Custom manager completes all controls under eager dropdown initialization")
 
 for _,opt in ipairs({{baseOnly=true},{only=F},{only=R},{}}) do
     w=world(opt); w:open(); local before,g=w:snapshot(); w:open(); local after,g2=w:snapshot()
