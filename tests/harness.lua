@@ -123,7 +123,7 @@ local function world(opt)
             for _,key in ipairs({"Left","Center","Right"}) do f[key]=f:CreateTexture(nil,"ARTWORK") end
             f.font=f:CreateFontString()
         elseif template=="BasicFrameTemplateWithInset" then f.TitleText=f:CreateFontString()
-        elseif template=="UICheckButtonTemplate" then f.Text=f:CreateFontString() end
+        elseif template=="UICheckButtonTemplate" and not opt.noCheckboxText then f.Text=f:CreateFontString() end
         return f
     end
     e.hooksecurefunc=function(obj,k,fn)
@@ -616,24 +616,18 @@ for _,name in ipairs({"ForeverAurasMainMenuButton","ReloadUI_MainMenuButton"}) d
 end
 pass("Main alone never retires originals or private intermediate folders")
 w=world({elles=true}); w.menu:SetScale(.8); w:open()
-local function editScale(n,save)
-    w.e.SlashCmdList.CUSTOMGAMEMENUEDITOR("")
-    local ed=w.core.layoutEditor
-    ed.menuSlider:SetValue(n)
-    equal(ed.rows[1]:GetScale(),n/100)
-    clickText(ed,save and "Save" or "Cancel"); w:open()
-end
-editScale(150,false); equal(w.menu:GetScale(),.8)
-editScale(150,true)
-for i=1,5 do w:open(); assert(math.abs(w.menu:GetScale()-1.2)<.00001); w:snapshot() end
-local reload=w.core.buttons[R]; local overlay=reload.cmmbSecure
-local _,_,rw=reload:GetRect()
-assert(math.abs(overlay:GetWidth()-rw*1.2)<.00001)
-w.menu:SetScale(.9); w:open(); assert(math.abs(w.menu:GetScale()-1.35)<.00001)
-editScale(50,true); equal(w.menu:GetScale(),.45)
-w.e.SlashCmdList.CUSTOMGAMEMENUEDITOR(""); clickText(w.core.layoutEditor,"100%"); clickText(w.core.layoutEditor,"Save")
-w:open(); equal(w.menu:GetScale(),.9); equal(w.e.CustomGameMenuButtonsDB.layout.scalePercent,nil)
-pass("Menu scale: preview, cancel, save, repeated opens, native scale changes, secure overlay width and reset")
+w.e.SlashCmdList.CUSTOMGAMEMENUEDITOR("")
+local ed=w.core.layoutEditor
+assert(ed.previewSlider and not ed.menuSlider)
+ed.previewSlider:SetValue(150)
+equal(ed.rows[1]:GetScale(),1.5)
+equal(w.menu:GetScale(),.8)
+clickText(ed,"Save"); w:open(); equal(w.menu:GetScale(),.8)
+w.e.SlashCmdList.CUSTOMGAMEMENUEDITOR(""); equal(ed.rows[1]:GetScale(),1)
+ed.previewSlider:SetValue(50); equal(ed.rows[1]:GetScale(),.5)
+clickText(ed,"Reset"); equal(ed.rows[1]:GetScale(),1)
+clickText(ed,"Cancel"); w:open(); equal(w.menu:GetScale(),.8)
+pass("Preview Scale is editor-only, resets independently, does not alter real game menu")
 for _,opt in ipairs({{baseOnly=true},{only=F},{only=R},{}}) do
     w=world(opt); w:open(); local names,geo=w:snapshot()
     assert(w.core.buttons.MenuEditor and w.core.OpenMenuEditor and w.core.MenuLayout and w.core.CustomButtons)
@@ -709,15 +703,23 @@ pass("Custom SavedVariables survive a fresh runtime, invalid entries are reporte
 
 w=world({custom=true}); w:open(); w.e.SlashCmdList.CUSTOMGAMEMENUCUSTOM("")
 local win=w.core.customButtonWindow; assert(win:IsShown())
-win.name:SetText("My command"); win.command:SetText("/wa"); clickText(win,"Save")
+win.name:SetText("My command"); win.command:SetText("/wa"); clickText(win,"Save button")
 equal(#w.core.CustomButtons:List(),1); equal(w.core.CustomButtons:List()[1].label,"My command")
 win.preview.scripts.OnClick(); equal(#w.core.CustomButtons:List(),1)
-clickText(win,"Duplicate"); clickText(win,"Save"); equal(#w.core.CustomButtons:List(),2)
+clickText(win,"Duplicate"); clickText(win,"Save button"); equal(#w.core.CustomButtons:List(),2)
 clickText(win,"Delete"); equal(#w.core.CustomButtons:List(),1)
-clickText(win,"New"); win.name:SetText("Unsaved"); clickText(win,"Close"); equal(#w.core.CustomButtons:List(),1)
+clickText(win,"New button"); win.name:SetText("Unsaved"); clickText(win,"Close"); equal(#w.core.CustomButtons:List(),1)
 w.e.SlashCmdList.CUSTOMGAMEMENUEDITOR(""); assert(w.core.layoutEditor:IsShown())
-clickText(w.core.layoutEditor,"Custom buttons..."); assert(win:IsShown())
+clickText(w.core.layoutEditor,"Manage buttons..."); assert(win:IsShown())
 pass("Custom manager GUI works without executing preview actions: save, duplicate, delete, discard and editor shortcut")
+w=world({custom=true,noCheckboxText=true});w:open();w.e.SlashCmdList.CUSTOMGAMEMENUCUSTOM("")
+win=w.core.customButtonWindow
+assert(win.save and win.delete and win.duplicate and win.enabled)
+clickText(win,"New button")
+win.name:SetText("Regression button");win.command:SetText("/wa")
+clickText(win,"Save button")
+equal(#w.core.CustomButtons:List(),1)
+pass("Custom manager completes setup when checkbox template lacks a Text field")
 
 for _,opt in ipairs({{baseOnly=true},{only=F},{only=R},{}}) do
     w=world(opt); w:open(); local before,g=w:snapshot(); w:open(); local after,g2=w:snapshot()
@@ -732,7 +734,7 @@ w.combat=false; w:event("PLAYER_REGEN_ENABLED"); w:open(); assert(w.core.buttons
 pass("Custom saved actions first loaded in combat wait until regeneration before creating secure frames")
 
 w=world({oldDB={layout={scalePercent=125}},mainDB={schemaVersion=1,layout={scalePercent=110}},oldFamily={[F]={version=2,textColor={r=.1,g=.2,b=.3},useBgColor=false}}})
-w:open(); equal(w.menu:GetScale(),1.1); equal(w:db(F).textColor,nil)
+w:open(); equal(w.menu:GetScale(),1); equal(w:db(F).textColor,nil)
 equal(w.e.CustomGameMenuButtonsDB.layout.scalePercent,110)
 pass("Public main DB owns layout; private folders/settings are not imported")
 -- Public 1.0.0 regressions beyond the inherited private-build harness.
