@@ -1,4 +1,4 @@
-# Custom Game Menu Buttons 1.0.2
+# Custom Game Menu Buttons 1.0.3
 
 WoW: Forever only (Interface 16001). Author: Azotorp. Code: GPL-3.0-only.
 
@@ -23,9 +23,9 @@ This is a locally built test candidate. Offline verification passes; actual Fore
 - `/cgme ForeverAuras` or `/cgme ReloadUI`: anchor/skin settings.
 - `/cgme <id> above <anchor>`, `below <anchor>`, `list`, `reset`, `help`: explicit placement controls. Anchor keys include `SHOP`, `OPTIONS`, `SUPPORT`, `LOGOUT`, family IDs, and foreign frame names/labels.
 
-The editor uses inert replicas. Move rows, add/remove spacers, set text/background colors, restore individual defaults, reset layout/all defaults (including family placements), and scale from 50–150% in 5% steps. Save commits; Cancel, Escape and closing discard the current layout draft. The Anchor / skin button opens detailed family settings with Blizzard, family and foreign anchors. Detailed settings have their own Save; closing discards their staged changes. Slash placement/reset commands act immediately outside a staged dialog.
+The editor uses inert replicas. Move rows, add/remove spacers, set text/background colors, restore individual defaults, reset layout/all defaults (including family placements), and zoom the editor preview from 50–150% in 5% steps. Save commits; Cancel, Escape and closing discard the current layout draft. The Anchor / skin button opens detailed family settings with Blizzard, family and foreign anchors. Detailed settings have their own Save; closing discards their staged changes. Slash placement/reset commands act immediately outside a staged dialog.
 
-The subdued, half-opacity gray Edit Game Menu link follows Return to Game. Editor windows stay above the menu. Scale multiplies native scale and does not accumulate over repeated opens. Missing foreign rows retain saved identities and return to their saved order when available again.
+The subdued, half-opacity gray Edit Game Menu link follows Return to Game. Editor windows stay above the menu. Preview zoom affects only editor replicas, never the actual game menu. Missing foreign rows retain saved identities and return to their saved order when available again.
 
 ## Custom buttons
 
@@ -73,10 +73,16 @@ python3 tools/build.py
 
 The tool regenerates icons and metadata from `VERSION`, checks Lua 5.1 syntax, runs the harness on source and extracted archives, checks each archive, writes checksums/report/logs, and builds source and runtime ZIPs under `dist/`. Python dependencies are build-time only. No Lua interpreter or external runtime library is shipped with addons. See `docs/API-and-Schema.md`, `docs/IMPLEMENTATION-REPORT.md` and raw logs in `docs/`.
 
-### Menu scaling (1.0.1)
+### Historical: menu scaling (1.0.1; superseded)
 
 The editor provides **Game Menu Scale** (50–150%; click Save to apply to the real in-game menu) and an independent **Preview Scale** (50–150%; only changes the editor replicas). Both have their own 100% reset. Preview zoom is not saved. Cancel discards staged game-menu scale changes.
 
-### 1.0.2 scale fix
+### Historical: 1.0.2 scale fix (superseded)
 
 **Game Menu Scale** changes the real menu on Save even while the editor hides it; the addon reapplies it on opening the menu. **Preview Scale** is independent and only affects the editor display. Real in-game testing is still required.
+
+### 1.0.3 Preview Scale and custom buttons
+
+The editor now offers **Preview Scale** only. This changes the editor replica zoom (50–150%) and never resizes GameMenuFrame. The earlier real-menu scale setting has been removed following in-game feedback.
+
+Click **Manage buttons...** > **New button**, enter **Button text**, select the **Action type** (Command or Built-in page), fill in the slash command such as `/wa` or select a supported page, then click **Save button**. Open the game menu again to use the new button. The custom-button creator now avoids assuming an optional checkbox `.Text` field exists.
