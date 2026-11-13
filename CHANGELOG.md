@@ -23,3 +23,9 @@ No GitHub commit/push/tag or CurseForge upload was performed. In-game acceptance
 - Apply saved Game Menu Scale on Save even when editor hides the real menu.
 - Recheck the actual frame scale whenever GameMenuFrame is shown and after the next UI tick.
 - Preview Scale remains separate and only scales editor replicas.
+
+## 1.0.3 — Custom button editor fixes
+
+- Remove nonfunctional real Game Menu Scale; retain independent Preview Scale (50–150%) only.
+- Fix checkbox template compatibility which previously stopped the Custom Buttons dialog before New, Duplicate, Delete and Save were created.
+- Clarify button labels and control wording in both editors.
