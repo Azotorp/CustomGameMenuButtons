@@ -1,0 +1,19 @@
+## Interface: 16001
+## Title: |cff00CCFFCustom Game Menu Buttons|r
+## IconTexture: Interface\AddOns\CustomGameMenuButtons\Media\AddonIcon.tga
+## Author: Azotorp
+## Version: 1.0.0
+## Notes: Game-menu editor, custom-button creator and shared runtime.
+## SavedVariables: CustomGameMenuButtonsDB
+## OptionalDeps: ElvUI, EllesmereUI, EllesmereUIBlizzardSkin
+## X-Flavor: Forever
+## X-License: GPL-3.0-only
+
+Version.lua
+Flavors\Forever.lua
+Core.lua
+Runtime.lua
+Presets.lua
+CustomButtons.lua
+MemberSettings.lua
+Editor.lua

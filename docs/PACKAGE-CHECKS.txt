@@ -1,0 +1,13 @@
+Lua 5.1 syntax: all shipped modules passed
+Validated 3 RGBA 64x64 TGA textures; generated 3 PNG exports and preview.
+PASS metadata/load paths: CustomGameMenuButtons
+PASS metadata/load paths: CustomGameMenuButtons-ForeverAuras
+PASS metadata/load paths: CustomGameMenuButtons-ReloadUI
+PASS single-root archive, GPL license and runtime-only contents: CustomGameMenuButtons-1.0.0-Forever.zip
+PASS single-root archive, GPL license and runtime-only contents: CustomGameMenuButtons-ForeverAuras-1.0.0-Forever.zip
+PASS single-root archive, GPL license and runtime-only contents: CustomGameMenuButtons-ReloadUI-1.0.0-Forever.zip
+PASS standalone archive: base with only required shared runtime
+PASS standalone archive: ForeverAuras with only required shared runtime
+PASS standalone archive: ReloadUI with only required shared runtime
+PASS masters preserved: three exact original files; see artwork/manifest.json SHA-256 values
+Source and extracted distributions: 55 behavior groups each; 0 failures

@@ -1,0 +1,13 @@
+## Interface: 16001
+## Title: |cffFF0000Custom Game Menu Buttons - Reload UI|r
+## IconTexture: Interface\AddOns\CustomGameMenuButtons-ReloadUI\Media\AddonIcon.tga
+## Author: Azotorp
+## Version: 1.0.0
+## Notes: Secure reload command in the game menu.
+## SavedVariables: CustomGameMenuButtons_ReloadUIDB
+## OptionalDeps: ElvUI, EllesmereUI, EllesmereUIBlizzardSkin, ReloadUI_MainMenuButton
+## X-Flavor: Forever
+## X-License: GPL-3.0-only
+## Dependencies: CustomGameMenuButtons
+
+ReloadUI.lua

@@ -1,0 +1,32 @@
+[
+  {
+    "addon": "CustomGameMenuButtons",
+    "master_size": [
+      1254,
+      1254
+    ],
+    "master_sha256": "ae6972d4b6693a4ae75f8683bec7a0357a5b6278fc2fda79921f3ba9e33a60f0",
+    "padding": "Centered transparent square; no crop or stretch",
+    "toc_metadata": "## IconTexture: Interface\\AddOns\\CustomGameMenuButtons\\Media\\AddonIcon.tga"
+  },
+  {
+    "addon": "CustomGameMenuButtons-ForeverAuras",
+    "master_size": [
+      1254,
+      1254
+    ],
+    "master_sha256": "a0f70bf8aef4b52dfe563c4b8eca1af267cfdcdcabbf507e8d144599243cb87a",
+    "padding": "Centered transparent square; no crop or stretch",
+    "toc_metadata": "## IconTexture: Interface\\AddOns\\CustomGameMenuButtons-ForeverAuras\\Media\\AddonIcon.tga"
+  },
+  {
+    "addon": "CustomGameMenuButtons-ReloadUI",
+    "master_size": [
+      1254,
+      1254
+    ],
+    "master_sha256": "f99b5ecc3d4392e117cee6fa1efde45f26b2c6c587477dedee774f8e477b402f",
+    "padding": "Centered transparent square; no crop or stretch",
+    "toc_metadata": "## IconTexture: Interface\\AddOns\\CustomGameMenuButtons-ReloadUI\\Media\\AddonIcon.tga"
+  }
+]
