@@ -1,4 +1,4 @@
-# Custom Game Menu Buttons 1.0.0
+# Custom Game Menu Buttons 1.0.1
 
 WoW: Forever only (Interface 16001). Author: Azotorp. Code: GPL-3.0-only.
 
@@ -72,3 +72,7 @@ python3 tools/build.py
 ```
 
 The tool regenerates icons and metadata from `VERSION`, checks Lua 5.1 syntax, runs the harness on source and extracted archives, checks each archive, writes checksums/report/logs, and builds source and runtime ZIPs under `dist/`. Python dependencies are build-time only. No Lua interpreter or external runtime library is shipped with addons. See `docs/API-and-Schema.md`, `docs/IMPLEMENTATION-REPORT.md` and raw logs in `docs/`.
+
+### Menu scaling (1.0.1)
+
+The editor provides **Game Menu Scale** (50–150%; click Save to apply to the real in-game menu) and an independent **Preview Scale** (50–150%; only changes the editor replicas). Both have their own 100% reset. Preview zoom is not saved. Cancel discards staged game-menu scale changes.
