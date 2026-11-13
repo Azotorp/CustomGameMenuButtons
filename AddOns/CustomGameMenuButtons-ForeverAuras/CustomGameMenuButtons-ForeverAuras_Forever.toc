@@ -2,7 +2,7 @@
 ## Title: |cff22A417Custom Game Menu Buttons - ForeverAuras|r
 ## IconTexture: Interface\AddOns\CustomGameMenuButtons-ForeverAuras\Media\AddonIcon.tga
 ## Author: Azotorp
-## Version: 1.0.3
+## Version: 1.0.4
 ## Notes: Add ForeverAuras to the game menu.
 ## SavedVariables: CustomGameMenuButtons_ForeverAurasDB
 ## OptionalDeps: ElvUI, EllesmereUI, EllesmereUIBlizzardSkin, ForeverAurasMainMenuButton
