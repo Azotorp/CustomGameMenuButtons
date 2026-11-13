@@ -2,7 +2,7 @@
 ## Title: |cff00CCFFCustom Game Menu Buttons|r
 ## IconTexture: Interface\AddOns\CustomGameMenuButtons\Media\AddonIcon.tga
 ## Author: Azotorp
-## Version: 1.0.0
+## Version: 1.0.2
 ## Notes: Game-menu editor, custom-button creator and shared runtime.
 ## SavedVariables: CustomGameMenuButtonsDB
 ## OptionalDeps: ElvUI, EllesmereUI, EllesmereUIBlizzardSkin
