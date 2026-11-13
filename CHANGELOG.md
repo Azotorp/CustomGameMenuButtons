@@ -29,3 +29,9 @@ No GitHub commit/push/tag or CurseForge upload was performed. In-game acceptance
 - Remove nonfunctional real Game Menu Scale; retain independent Preview Scale (50–150%) only.
 - Fix checkbox template compatibility which previously stopped the Custom Buttons dialog before New, Duplicate, Delete and Save were created.
 - Clarify button labels and control wording in both editors.
+
+## 1.0.4 — Custom button initialization
+
+- Initialize the new-button form before constructing dropdowns.
+- Guard label changes before the preview control exists.
+- Add a regression check for immediate dropdown callbacks.
