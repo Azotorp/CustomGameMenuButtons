@@ -15,6 +15,7 @@ local nativeScale,lastApplied
 local previewPercent=100
 function core:ApplyMenuScale()
     local menu=GameMenuFrame
+    if not menu or not menu.GetScale or not menu.SetScale then return end
     if InCombatLockdown() and menu.IsProtected and menu:IsProtected() then return end
     local current=menu:GetScale()
     if not lastApplied or math.abs(current-lastApplied)>.00001 then nativeScale=current end
@@ -333,6 +334,9 @@ local function makeEditor()
             if r.layoutDraft then core.util.copyPreferences(r.layoutDraft,r.db) end
         end
         w:Hide()
+        -- The editor hides GameMenuFrame. Apply the saved scale while hidden,
+        -- then arrange normally when the game menu is next shown.
+        core:ApplyMenuScale()
         if GameMenuFrame:IsShown() then core:Arrange(false,true) end
     end)
     w:SetScript("OnHide",function()
