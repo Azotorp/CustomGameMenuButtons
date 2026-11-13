@@ -673,6 +673,13 @@ end
 function core:Hook()
     if not self.hooksInstalled and GameMenuFrame and GameMenuFrame.InitButtons then
         self.hooksInstalled=true
+        -- Apply scale even on opens that do not invoke Layout again.
+        GameMenuFrame:HookScript("OnShow",function()
+            if core.ApplyMenuScale then core:ApplyMenuScale() end
+            C_Timer.After(0,function()
+                if GameMenuFrame:IsShown() and core.ApplyMenuScale then core:ApplyMenuScale() end
+            end)
+        end)
         hooksecurefunc(GameMenuFrame,"InitButtons",function() core:Init() end)
     end
 end
