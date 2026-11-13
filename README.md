@@ -1,4 +1,4 @@
-# Custom Game Menu Buttons 1.0.3
+# Custom Game Menu Buttons 1.0.4
 
 WoW: Forever only (Interface 16001). Author: Azotorp. Code: GPL-3.0-only.
 
@@ -86,3 +86,7 @@ The editor provides **Game Menu Scale** (50–150%; click Save to apply to the r
 The editor now offers **Preview Scale** only. This changes the editor replica zoom (50–150%) and never resizes GameMenuFrame. The earlier real-menu scale setting has been removed following in-game feedback.
 
 Click **Manage buttons...** > **New button**, enter **Button text**, select the **Action type** (Command or Built-in page), fill in the slash command such as `/wa` or select a supported page, then click **Save button**. Open the game menu again to use the new button. The custom-button creator now avoids assuming an optional checkbox `.Text` field exists.
+
+### 1.0.4 — Custom button initialization
+
+The custom button form initializes the new-button draft before dropdown setup to support eager WoW dropdown callbacks. The text input also handles the not-yet-created preview. The full form should now appear; in-game verification remains pending.
