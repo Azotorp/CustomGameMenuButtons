@@ -17,3 +17,9 @@ No GitHub commit/push/tag or CurseForge upload was performed. In-game acceptance
 - Distinguish **Game Menu Scale** (saved in the layout and applied to the actual GameMenuFrame) from **Preview Scale** (editor-only zoom).
 - Preview zoom starts at 100% each editor opening; its reset does not modify game-menu scale.
 - Game-menu scaling applies on Save and is restored during menu arrangement.
+
+## 1.0.2 — Actual Game Menu scale fix
+
+- Apply saved Game Menu Scale on Save even when editor hides the real menu.
+- Recheck the actual frame scale whenever GameMenuFrame is shown and after the next UI tick.
+- Preview Scale remains separate and only scales editor replicas.
