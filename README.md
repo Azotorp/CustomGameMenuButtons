@@ -1,4 +1,4 @@
-# Custom Game Menu Buttons 1.0.1
+# Custom Game Menu Buttons 1.0.2
 
 WoW: Forever only (Interface 16001). Author: Azotorp. Code: GPL-3.0-only.
 
@@ -76,3 +76,7 @@ The tool regenerates icons and metadata from `VERSION`, checks Lua 5.1 syntax, r
 ### Menu scaling (1.0.1)
 
 The editor provides **Game Menu Scale** (50–150%; click Save to apply to the real in-game menu) and an independent **Preview Scale** (50–150%; only changes the editor replicas). Both have their own 100% reset. Preview zoom is not saved. Cancel discards staged game-menu scale changes.
+
+### 1.0.2 scale fix
+
+**Game Menu Scale** changes the real menu on Save even while the editor hides it; the addon reapplies it on opening the menu. **Preview Scale** is independent and only affects the editor display. Real in-game testing is still required.
